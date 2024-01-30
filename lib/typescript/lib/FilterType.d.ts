@@ -1,3 +1,21 @@
+declare const _default: {
+    NONE: string;
+    INVERT: string;
+    MONOCHROME: string;
+    POSTERIZE: string;
+    FALSE: string;
+    MAXIMUMCOMPONENT: string;
+    MINIMUMCOMPONENT: string;
+    CHROME: string;
+    FADE: string;
+    INSTANT: string;
+    MONO: string;
+    NOIR: string;
+    PROCESS: string;
+    TONAL: string;
+    TRANSFER: string;
+    SEPIA: string;
+};
 /**
  * MIT License
  *
@@ -21,23 +39,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-declare const _default: {
-    NONE: string;
-    INVERT: string;
-    MONOCHROME: string;
-    POSTERIZE: string;
-    FALSE: string;
-    MAXIMUMCOMPONENT: string;
-    MINIMUMCOMPONENT: string;
-    CHROME: string;
-    FADE: string;
-    INSTANT: string;
-    MONO: string;
-    NOIR: string;
-    PROCESS: string;
-    TONAL: string;
-    TRANSFER: string;
-    SEPIA: string;
-};
 export default _default;
 //# sourceMappingURL=FilterType.d.ts.map

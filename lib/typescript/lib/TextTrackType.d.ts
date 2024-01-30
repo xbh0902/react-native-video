@@ -1,3 +1,8 @@
+declare const _default: {
+    SRT: string;
+    TTML: string;
+    VTT: string;
+};
 /**
  * MIT License
  *
@@ -21,10 +26,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-declare const _default: {
-    SRT: string;
-    TTML: string;
-    VTT: string;
-};
 export default _default;
 //# sourceMappingURL=TextTrackType.d.ts.map

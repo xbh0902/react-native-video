@@ -1,11 +1,11 @@
 /// <reference types="react" />
 import type { HostComponent, ViewProps } from 'react-native';
 import type { Float, Int32, WithDefault, DirectEventHandler, Double } from 'react-native/Libraries/Types/CodegenTypes';
-type Headers = ReadonlyArray<Readonly<{
+declare type Headers = ReadonlyArray<Readonly<{
     key: string;
     value: string;
 }>>;
-type VideoSrc = Readonly<{
+declare type VideoSrc = Readonly<{
     uri?: string;
     isNetwork?: boolean;
     isAsset?: boolean;
@@ -15,8 +15,8 @@ type VideoSrc = Readonly<{
     patchVer?: Int32;
     requestHeaders?: Headers;
 }>;
-export type DrmType = WithDefault<'widevine' | 'playready' | 'clearkey' | 'fairplay', 'widevine'>;
-type Drm = Readonly<{
+export declare type DrmType = WithDefault<'widevine' | 'playready' | 'clearkey' | 'fairplay', 'widevine'>;
+declare type Drm = Readonly<{
     drmType?: DrmType;
     licenseServer?: string;
     headers?: Headers;
@@ -24,46 +24,46 @@ type Drm = Readonly<{
     certificateUrl?: string;
     base64Certificate?: boolean;
 }>;
-type TextTracks = ReadonlyArray<Readonly<{
+declare type TextTracks = ReadonlyArray<Readonly<{
     title: string;
     language: string;
     type: string;
     uri: string;
 }>>;
-type AudioTrackType = WithDefault<'system' | 'disabled' | 'title' | 'language' | 'index', 'system'>;
-type SelectedAudioTrack = Readonly<{
+declare type AudioTrackType = WithDefault<'system' | 'disabled' | 'title' | 'language' | 'index', 'system'>;
+declare type SelectedAudioTrack = Readonly<{
     selectedAudioType?: AudioTrackType;
     value?: string;
     index?: Int32;
 }>;
-type TextTrackType = WithDefault<'system' | 'disabled' | 'title' | 'language' | 'index', 'system'>;
-type SelectedTextTrack = Readonly<{
+declare type TextTrackType = WithDefault<'system' | 'disabled' | 'title' | 'language' | 'index', 'system'>;
+declare type SelectedTextTrack = Readonly<{
     selectedTextType?: TextTrackType;
     value?: string;
     index?: Int32;
 }>;
-type VideoTrackType = WithDefault<'auto' | 'disabled' | 'resolution' | 'index', 'auto'>;
-type SelectedVideoTrack = Readonly<{
+declare type VideoTrackType = WithDefault<'auto' | 'disabled' | 'resolution' | 'index', 'auto'>;
+declare type SelectedVideoTrack = Readonly<{
     selectedVideoType?: VideoTrackType;
     value?: string;
     index?: Int32;
 }>;
-export type Seek = Readonly<{
+export declare type Seek = Readonly<{
     time: Float;
     tolerance?: Float;
 }>;
-export type OnLoadStartData = Readonly<{
+export declare type OnLoadStartData = Readonly<{
     isNetwork: boolean;
     type: string;
     uri: string;
 }>;
-type audioTracksData = ReadonlyArray<Readonly<{
+declare type audioTracksData = ReadonlyArray<Readonly<{
     index?: Int32;
     title?: string;
     language?: string;
     type?: string;
 }>>;
-type videoTracksData = ReadonlyArray<Readonly<{
+declare type videoTracksData = ReadonlyArray<Readonly<{
     trackId?: Int32;
     bitrate?: Float;
     codecs?: string;
@@ -71,8 +71,8 @@ type videoTracksData = ReadonlyArray<Readonly<{
     height?: Float;
     width?: Float;
 }>>;
-type _OnLoadData = Readonly<{}>;
-export type OnLoadData = Readonly<{
+declare type _OnLoadData = Readonly<{}>;
+export declare type OnLoadData = Readonly<{
     currentPosition: Float;
     duration: Float;
     naturalSize: Readonly<{
@@ -84,55 +84,55 @@ export type OnLoadData = Readonly<{
     textTracks: audioTracksData;
     videoTracks: videoTracksData;
 }>;
-export type OnVideoErrorData = Readonly<{
+export declare type OnVideoErrorData = Readonly<{
     error: string;
 }>;
-export type OnProgressData = Readonly<{
+export declare type OnProgressData = Readonly<{
     currentTime: Float;
     playableDuration: Float;
     seekableDuration: Float;
 }>;
-export type OnSeekData = Readonly<{
+export declare type OnSeekData = Readonly<{
     currentTime: Float;
     seekTime: Float;
 }>;
-export type OnBufferData = Readonly<{
+export declare type OnBufferData = Readonly<{
     isBuffering: boolean;
 }>;
-export type OnBandwidthUpdateData = Readonly<{
+export declare type OnBandwidthUpdateData = Readonly<{
     bitrate: Float;
 }>;
-export type OnExternalPlaybackChangeData = Readonly<{
+export declare type OnExternalPlaybackChangeData = Readonly<{
     isExternalPlaybackActive: boolean;
 }>;
-type _OnTimedMetadataData = Readonly<{}>;
-export type OnTimedMetadataData = Readonly<{
+declare type _OnTimedMetadataData = Readonly<{}>;
+export declare type OnTimedMetadataData = Readonly<{
     metadata: ReadonlyArray<Readonly<{
         value?: string;
         identifier?: string;
     }>>;
 }>;
-export type OnPlaybackData = Readonly<{
+export declare type OnPlaybackData = Readonly<{
     playbackRate: Float;
 }>;
-export type OnAudioFocusChangedData = Readonly<{
+export declare type OnAudioFocusChangedData = Readonly<{
     hasFocus: boolean;
 }>;
-export type OnGetLicenseData = Readonly<{
+export declare type OnGetLicenseData = Readonly<{
     licenseUrl: string;
     contentId: string;
     spcBase64: string;
 }>;
-export type OnPictureInPictureStatusChangedData = Readonly<{
+export declare type OnPictureInPictureStatusChangedData = Readonly<{
     isActive: boolean;
 }>;
-type BufferConfig = Readonly<{
+declare type BufferConfig = Readonly<{
     minBufferMs?: Float;
     maxBufferMs?: Float;
     bufferForPlaybackMs?: Float;
     bufferForPlaybackAfterRebufferMs?: Float;
 }>;
-export type Filter = WithDefault<'None' | 'CIColorInvert' | 'CIColorMonochrome' | 'CIColorPosterize' | 'CIFalseColor' | 'CIMaximumComponent' | 'CIMinimumComponent' | 'CIPhotoEffectChrome' | 'CIPhotoEffectFade' | 'CIPhotoEffectInstant' | 'CIPhotoEffectMono' | 'CIPhotoEffectNoir' | 'CIPhotoEffectProcess' | 'CIPhotoEffectTonal' | 'CIPhotoEffectTransfer' | 'CISepiaTone', 'None'>;
+export declare type Filter = WithDefault<'None' | 'CIColorInvert' | 'CIColorMonochrome' | 'CIColorPosterize' | 'CIFalseColor' | 'CIMaximumComponent' | 'CIMinimumComponent' | 'CIPhotoEffectChrome' | 'CIPhotoEffectFade' | 'CIPhotoEffectInstant' | 'CIPhotoEffectMono' | 'CIPhotoEffectNoir' | 'CIPhotoEffectProcess' | 'CIPhotoEffectTonal' | 'CIPhotoEffectTransfer' | 'CISepiaTone', 'None'>;
 export interface VideoNativeProps extends ViewProps {
     src: VideoSrc;
     drm?: Drm;
@@ -197,7 +197,7 @@ export interface VideoNativeProps extends ViewProps {
     onAudioFocusChanged?: DirectEventHandler<OnAudioFocusChangedData>;
     onGetLicense?: DirectEventHandler<OnGetLicenseData>;
 }
-export type VideoComponentType = HostComponent<VideoNativeProps>;
+export declare type VideoComponentType = HostComponent<VideoNativeProps>;
 export interface NativeCommands {
     save: (viewRef: React.ElementRef<VideoComponentType>) => void;
     seek: (viewRef: React.ElementRef<VideoComponentType>, time: Float, tolerance?: Float) => void;

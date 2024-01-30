@@ -1,3 +1,8 @@
+declare const _default: {
+    contain: string;
+    cover: string;
+    stretch: string;
+};
 /**
  * MIT License
  *
@@ -21,10 +26,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-declare const _default: {
-    contain: string;
-    cover: string;
-    stretch: string;
-};
 export default _default;
 //# sourceMappingURL=VideoResizeMode.d.ts.map

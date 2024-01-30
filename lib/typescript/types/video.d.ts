@@ -24,9 +24,9 @@
 import type { ISO639_1 } from './language';
 import type { ReactVideoEvents } from './events';
 import type { StyleProp, ViewStyle } from 'react-native';
-type Filter = 'None' | 'CIColorInvert' | 'CIColorMonochrome' | 'CIColorPosterize' | 'CIFalseColor' | 'CIMaximumComponent' | 'CIMinimumComponent' | 'CIPhotoEffectChrome' | 'CIPhotoEffectFade' | 'CIPhotoEffectInstant' | 'CIPhotoEffectMono' | 'CIPhotoEffectNoir' | 'CIPhotoEffectProcess' | 'CIPhotoEffectTonal' | 'CIPhotoEffectTransfer' | 'CISepiaTone';
-type Headers = Record<string, string>;
-export type ReactVideoSource = Readonly<{
+declare type Filter = 'None' | 'CIColorInvert' | 'CIColorMonochrome' | 'CIColorPosterize' | 'CIFalseColor' | 'CIMaximumComponent' | 'CIMinimumComponent' | 'CIPhotoEffectChrome' | 'CIPhotoEffectFade' | 'CIPhotoEffectInstant' | 'CIPhotoEffectMono' | 'CIPhotoEffectNoir' | 'CIPhotoEffectProcess' | 'CIPhotoEffectTonal' | 'CIPhotoEffectTransfer' | 'CISepiaTone';
+declare type Headers = Record<string, string>;
+export declare type ReactVideoSource = Readonly<{
     uri?: string;
     isNetwork?: boolean;
     isAsset?: boolean;
@@ -38,7 +38,7 @@ export type ReactVideoSource = Readonly<{
     startTime?: number;
     endTime?: number;
 }>;
-export type ReactVideoDrm = Readonly<{
+export declare type ReactVideoDrm = Readonly<{
     type?: 'widevine' | 'playready' | 'clearkey' | 'fairplay';
     licenseServer?: string;
     headers?: Headers;
@@ -47,21 +47,21 @@ export type ReactVideoDrm = Readonly<{
     base64Certificate?: boolean;
     getLicense?: (licenseUrl: string, contentId: string, spcBase64: string) => void;
 }>;
-type BufferConfig = {
+declare type BufferConfig = {
     minBufferMs?: number;
     maxBufferMs?: number;
     bufferForPlaybackMs?: number;
     bufferForPlaybackAfterRebufferMs?: number;
 };
-type SelectedTrack = {
+declare type SelectedTrack = {
     type: 'system' | 'disabled' | 'title' | 'language' | 'index';
     value?: string | number;
 };
-type SelectedVideoTrack = {
+declare type SelectedVideoTrack = {
     type: 'auto' | 'disabled' | 'resolution' | 'index';
     value: number;
 };
-type TextTracks = {
+declare type TextTracks = {
     title: string;
     language: ISO639_1;
     type: 'application/x-subrip' | 'application/ttml+xml' | 'text/vtt';
