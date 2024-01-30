@@ -83,33 +83,33 @@ export struct PlayPlayer {
   }
   // @Watch cb
   onChanged(propName: string) : void {
-    Logger.info(`RNOH in Player, onChanged,propName= ${JSON.stringify(propName)}`);
-    Logger.info(`RNOH in Player, onChanged,volume= ${JSON.stringify(this.volume)}`);
-    Logger.info(`RNOH in Player, onChanged,resizeMode= ${JSON.stringify(this.resizeMode)}`);
-    Logger.info(`RNOH in Player, onChanged,disableFocus= ${JSON.stringify(this.disableFocus)}`);
+    Logger.debug(`RNOH in Player, onChanged,propName= ${JSON.stringify(propName)}`);
+    Logger.debug(`RNOH in Player, onChanged,volume= ${JSON.stringify(this.volume)}`);
+    Logger.debug(`RNOH in Player, onChanged,resizeMode= ${JSON.stringify(this.resizeMode)}`);
+    Logger.debug(`RNOH in Player, onChanged,disableFocus= ${JSON.stringify(this.disableFocus)}`);
     if (this.playVideoModel) {
       this.playVideoModel.updateProp()
     }
   }
 
   onSrcChanged(propName: string) : void {
-    Logger.info(`RNOH in Player, onSrcChanged,srcout: ${JSON.stringify(this.src)}`);
-    Logger.info(`RNOH in Player, onSrcChanged,propName: ${JSON.stringify(propName)}`);
+    Logger.debug(`RNOH in Player, onSrcChanged,srcout: ${JSON.stringify(this.src)}`);
+    Logger.debug(`RNOH in Player, onSrcChanged,propName: ${JSON.stringify(propName)}`);
     this.playVideoModel.switchVideo(this.src);
   }
 
   onRepeatChanged(propName: string) : void {
-    Logger.info(`RNOH in Player, onRepeatChange, ${JSON.stringify(this.repeat)}`);
+    Logger.debug(`RNOH in Player, onRepeatChange, ${JSON.stringify(this.repeat)}`);
     this.playVideoModel.switchRepeat(this.repeat);
   }
 
   onMutedChanged(propName: string) : void {
-    Logger.info(`RNOH in Player, onMutedChanged, ${JSON.stringify(this.muted)}`);
+    Logger.debug(`RNOH in Player, onMutedChanged, ${JSON.stringify(this.muted)}`);
     this.playVideoModel.switchMuted(this.muted);
   }
 
   onPausedChanged(propName: string) : void {
-    Logger.info(`RNOH in Player, onPausedChanged, ${JSON.stringify(this.paused)}`);
+    Logger.debug(`RNOH in Player, onPausedChanged, ${JSON.stringify(this.paused)}`);
     this.playVideoModel.switchPlayOrPause(this.paused);
   }
 
@@ -131,7 +131,7 @@ export struct PlayPlayer {
             surfaceHeight: PlayConstants.PLAY_PLAYER.SURFACE_HEIGHT
           });
           this.surfaceID = Number(this.xComponentController.getXComponentSurfaceId());
-          Logger.info(`RNOH in Player, tofirstPlay, ${JSON.stringify(this.src)}`);
+          Logger.debug(`RNOH in Player, tofirstPlay, ${JSON.stringify(this.src)}`);
           if (this.src == '') {
             this.playVideoModel.firstPlay(this.index, this.src, this.surfaceID);
           } else {

@@ -63,16 +63,16 @@ export class VideoController {
   createAVPlayer() {
     media.createAVPlayer().then((avPlayer) => {
       if (avPlayer) {
-        Logger.info(`RNOH in ctrl, createAVPlayer isNull: ${avPlayer == null}`);
+        Logger.debug(`RNOH in ctrl, createAVPlayer isNull: ${avPlayer == null}`);
         this.avPlayer = avPlayer;
         this.bindState();
-        Logger.info(`RNOH in ctrl, createAVPlayer after bind`);
+        Logger.debug(`RNOH in ctrl, createAVPlayer after bind`);
         if (this.flagtd) {
           this.flagtd = false;
           this.avPlayer.url = this.url;
-          Logger.info(`RNOH in ctrl, createAVPlayer need toplay url,after bind:` + this.url);
+          Logger.debug(`RNOH in ctrl, createAVPlayer need toplay url,after bind:` + this.url);
         } else {
-          Logger.info(`RNOH in ctrl, createAVPlayer noneed toplay url,after bind`);
+          Logger.debug(`RNOH in ctrl, createAVPlayer noneed toplay url,after bind`);
         }
       } else {
         Logger.error('RNOH in ctrl, [PlayVideoModel] createAvPlayer fail!');
@@ -84,7 +84,7 @@ export class VideoController {
    * AVPlayer binding event.
    */
   bindState() {
-    Logger.info(`RNOH in ctrl, bindState`);
+    Logger.debug(`RNOH in ctrl, bindState`);
     if (this.avPlayer){
 
       this.onStateChange();
@@ -94,23 +94,23 @@ export class VideoController {
       });
 
       this.avPlayer.on(Events.DURATION_UPDATE, (durationA) => {
-        Logger.info('RNOH in ctrl,durationUpdate success,new duration is :' + durationA)
+        Logger.debug('RNOH in ctrl,durationUpdate success,new duration is :' + durationA)
         this.duration = durationA == 0 ? 0 : Math.floor(durationA / 1000); // ms->s
       })
 
       this.avPlayer.on(Events.ERROR, (error) => {
-        Logger.info(`RNOH in ctrl, event error： ${JSON.stringify(error)}`);
+        Logger.debug(`RNOH in ctrl, event error： ${JSON.stringify(error)}`);
         this.playError(JSON.stringify(error));
       })
 
       this.avPlayer.on(Events.END_OF_STREAM, () => {
-        Logger.info('RNOH in ctrl, END_OF_STREAM')
+        Logger.debug('RNOH in ctrl, END_OF_STREAM')
         this.onVideoEnd();
       })
 
       this.avPlayer.on(Events.BUFFERING_UPDATE, (infoType: media.BufferingInfoType, value: number) => {
         /* 播放缓存事件回调方法。BufferingInfoType为BUFFERING_PERCENT或CACHED_DURATION时，value值有效，否则固定为0。 */
-        Logger.info('RNOH in ctrl, BUFFERING_UPDATE')
+        Logger.debug('RNOH in ctrl, BUFFERING_UPDATE')
         switch (infoType) {
           case media.BufferingInfoType.BUFFERING_START: // 表示缓存开始，
             this.onVideoPlaybackStalled();
@@ -124,7 +124,7 @@ export class VideoController {
           /* 此时的value有值，表示缓存百分比*/
             break;
           case media.BufferingInfoType.CACHED_DURATION: // 表示缓存时长，毫秒（ms）。
-            Logger.info(`RNOH in ctrl, onVideoProgress CACHED_DURATION value = ${value}`);
+            Logger.debug(`RNOH in ctrl, onVideoProgress CACHED_DURATION value = ${value}`);
             this.mVideoBufferedDuration = Math.floor(value / 1000) // ms--?s
             break;
           default:
@@ -133,10 +133,10 @@ export class VideoController {
       })
 
       this.avPlayer.on(Events.SEEK_DONE, (seekDoneTime: number) => {
-         Logger.info(`RNOH in ctrl, seekDone success,and seek time is: ${seekDoneTime} `)
+         Logger.debug(`RNOH in ctrl, seekDone success,and seek time is: ${seekDoneTime} `)
       })
     }
-    Logger.info(`RNOH in ctrl, bindState end`);
+    Logger.debug(`RNOH in ctrl, bindState end`);
   }
 
   /**
@@ -214,7 +214,7 @@ export class VideoController {
     if (this.avPlayer && this.avPlayer.state == 'idle') {
       this.avPlayer.url = this.url;
     } else {
-      Logger.info(`RNOH in ctrl, avPlayer no`);
+      Logger.debug(`RNOH in ctrl, avPlayer no`);
       this.flagtd = true;
     }
   }
@@ -258,35 +258,35 @@ export class VideoController {
    * @return
    */
   switchVideo(newUrl: string) {
-    Logger.info(`RNOH in ctrl switchVideo,  state ${JSON.stringify(this.avPlayer.state)}`);
+    Logger.debug(`RNOH in ctrl switchVideo,  state ${JSON.stringify(this.avPlayer.state)}`);
     this.bindState();
-    Logger.info(`RNOH in ctrl switchVideo, 100`);
-    Logger.info(`RNOH in ctrl switchVideo,  state ${JSON.stringify(this.url)},new: ${JSON.stringify(newUrl)}`);
+    Logger.debug(`RNOH in ctrl switchVideo, 100`);
+    Logger.debug(`RNOH in ctrl switchVideo,  state ${JSON.stringify(this.url)},new: ${JSON.stringify(newUrl)}`);
     this.url = newUrl;
-    Logger.info(`RNOH in ctrl switchVideo, 200`);
+    Logger.debug(`RNOH in ctrl switchVideo, 200`);
     if (this.surfaceId == 0 || this.surfaceId == undefined) {
-      Logger.info(`RNOH in ctrl switchVideo, 210`);
+      Logger.debug(`RNOH in ctrl switchVideo, 210`);
       return;
     }
 
     if ('idle' == (this.avPlayer.state)) {
-      Logger.info(`RNOH in ctrl switchVideo, 201 ,${this.url}`);
+      Logger.debug(`RNOH in ctrl switchVideo, 201 ,${this.url}`);
       this.avPlayer.url = this.url;
     } else {
-      Logger.info(`RNOH in ctrl switchVideo, 202 ,reset`);
+      Logger.debug(`RNOH in ctrl switchVideo, 202 ,reset`);
       this.avPlayer.reset();
-      Logger.info(`RNOH in ctrl switchVideo, 202 ,${this.url}`);
+      Logger.debug(`RNOH in ctrl switchVideo, 202 ,${this.url}`);
     }
-    Logger.info(`RNOH in ctrl switchVideo, 300`);
-    Logger.info(`RNOH in ctrl switchVideo,  state11 ${JSON.stringify(this.avPlayer.state)}`);
+    Logger.debug(`RNOH in ctrl switchVideo, 300`);
+    Logger.debug(`RNOH in ctrl switchVideo,  state11 ${JSON.stringify(this.avPlayer.state)}`);
   }
 
   /**
    * Switching Between Video Play and Pause.
    */
   switchPlayOrPause(paused: boolean) {
-    Logger.info(`RNOH in ctrl switchPlayOrPause,state out= ${this.avPlayer.state};paused= ${JSON.stringify(paused)}`);
-    if (this.status === CommonConstants.STATUS_START && paused) {
+    Logger.debug(`RNOH in ctrl switchPlayOrPause,state out= ${this.avPlayer.state};paused= ${JSON.stringify(paused)}`);
+    if (paused) {
       this.avPlayer.pause();
     } else {
       this.avPlayer.play();
@@ -295,15 +295,15 @@ export class VideoController {
 
   switchRepeat(repeat: boolean) {
     this.loop = repeat
-    Logger.info(`RNOH in ctrl, switchRepeat, ${JSON.stringify(repeat)}`);
-    Logger.info(`RNOH in ctrl, switchRepeat, ${JSON.stringify(this.playerThis.repeat)}`);
+    Logger.debug(`RNOH in ctrl, switchRepeat, ${JSON.stringify(repeat)}`);
+    Logger.debug(`RNOH in ctrl, switchRepeat, ${JSON.stringify(this.playerThis.repeat)}`);
     if (this.status === CommonConstants.STATUS_PREPARED ||
       this.status === CommonConstants.STATUS_START ||
       this.status === CommonConstants.STATUS_PAUSE ||
       this.status === CommonConstants.STATUS_COMPLETED
     ) {
       this.avPlayer.loop = this.loop;
-      Logger.info(`RNOH in ctrl, switchRepeat2, ${JSON.stringify(repeat)}`);
+      Logger.debug(`RNOH in ctrl, switchRepeat2, ${JSON.stringify(repeat)}`);
     }
   }
 
@@ -323,18 +323,18 @@ export class VideoController {
         currentVolume = 1.0
       }
     }
-    Logger.info(`RNOH in ctrl, switchMuted, ${JSON.stringify(muted)} ,currentVolume= ${JSON.stringify(currentVolume)}`);
+    Logger.debug(`RNOH in ctrl, switchMuted, ${JSON.stringify(muted)} ,currentVolume= ${JSON.stringify(currentVolume)}`);
     if (this.status === CommonConstants.STATUS_PREPARED ||
       this.status === CommonConstants.STATUS_START ||
       this.status === CommonConstants.STATUS_PAUSE ||
       this.status === CommonConstants.STATUS_COMPLETED
     ) {
       this.avPlayer.setVolume(currentVolume);
-      Logger.info(`RNOH in ctrl, switchMuted2,currentVolume= ${JSON.stringify(currentVolume)}`);
+      Logger.debug(`RNOH in ctrl, switchMuted2,currentVolume= ${JSON.stringify(currentVolume)}`);
     }
 
     this.avPlayer.on('volumeChange', (vol: number) => {
-      Logger.info('RNOH in ctrl volumeChange success,and new volume is :' + vol)
+      Logger.debug('RNOH in ctrl volumeChange success,and new volume is :' + vol)
       this.avPlayer.off('volumeChange')
     })
   }
@@ -354,9 +354,9 @@ export class VideoController {
    * @return
    */
   setSeekTime(value: number) {
-    Logger.info(`RNOH in ctrl setSeekTime== ${JSON.stringify(value)}`);
+    Logger.debug(`RNOH in ctrl setSeekTime== ${JSON.stringify(value)}`);
     this.seekTime = value*1000;
-    Logger.info(`RNOH in ctrl setSeekTime== ${this.seekTime}`);
+    Logger.debug(`RNOH in ctrl setSeekTime== ${this.seekTime}`);
     /* seek 只能在prepared/playing/paused/complete状态调用 毫秒（ms）*/
     if (this.status === CommonConstants.STATUS_PREPARED ||
       this.status === CommonConstants.STATUS_START ||
@@ -364,14 +364,14 @@ export class VideoController {
       this.status === CommonConstants.STATUS_COMPLETED
     ) {
       this.avPlayer.seek(this.seekTime);
-      Logger.info(`RNOH in ctrl avPlayer.seek`);
+      Logger.debug(`RNOH in ctrl avPlayer.seek`);
     }
   }
 
   /* 初始化播放器状态 */
   initProps() {
 
-    Logger.info(`RNOH in ctrl, initProps repeat, ${JSON.stringify(this.playerThis.repeat)}`);
+    Logger.debug(`RNOH in ctrl, initProps repeat, ${JSON.stringify(this.playerThis.repeat)}`);
     this.avPlayer.loop = this.playerThis.repeat;
 
     this.mMuted = this.playerThis.muted
@@ -386,15 +386,15 @@ export class VideoController {
   updateProp() {
     /* 设置 需要特定状态下设置*/
     if (this.avPlayer != null) {
-      Logger.info(`RNOH in ctrl, updateProp volume, ${JSON.stringify(this.playerThis.volume)}`);
+      Logger.debug(`RNOH in ctrl, updateProp volume, ${JSON.stringify(this.playerThis.volume)}`);
       this.avPlayer.setVolume(this.playerThis.volume); /* 更新音量 */
-      Logger.info(`RNOH in ctrl, updateProp resizeMode, ${JSON.stringify(this.playerThis.resizeMode)}`);
+      Logger.debug(`RNOH in ctrl, updateProp resizeMode, ${JSON.stringify(this.playerThis.resizeMode)}`);
       /* 更新 resizeMode */
        this.convertResizeMode(this.playerThis.resizeMode)
       /* 更新音频流类型 */
       this.watchStatus();
     } else {
-      Logger.info(`RNOH in ctrl, updateProp :  ${JSON.stringify(this.avPlayer)}`);
+      Logger.debug(`RNOH in ctrl, updateProp :  ${JSON.stringify(this.avPlayer)}`);
     }
 
   }
@@ -473,7 +473,7 @@ export class VideoController {
    */
   initPlayerThis(playerThis:IPlayPlayer) {
     if (playerThis == null) {
-      Logger.info(`RNOH in ctrl, initPlayerThis is null .`);
+      Logger.debug(`RNOH in ctrl, initPlayerThis is null .`);
     }
     this.playerThis = playerThis;
   }
@@ -484,7 +484,7 @@ export class VideoController {
    * @param cUri: 当前视频URL
    */
   onVideoLoadStart(cUri: string) {
-    Logger.info(`RNOH in ctrl, onVideoLoadStart URL: ${cUri}`);
+    Logger.debug(`RNOH in ctrl, onVideoLoadStart URL: ${cUri}`);
     this.playPageThis.onVideoLoadStart(cUri);
   }
 
@@ -495,7 +495,7 @@ export class VideoController {
    * @return null
    */
   onReadyForDisplay() {
-    Logger.info(`RNOH in ctrl, onReadyForDisplay`);
+    Logger.debug(`RNOH in ctrl, onReadyForDisplay`);
     this.playPageThis.onReadyForDisplay();
   }
 
@@ -505,13 +505,13 @@ export class VideoController {
    * @param time Current video playback time.
    */
   onVideoProgress(currentTime: number) {
-    Logger.info(`RNOH in ctrl, onVideoProgress currentTime = ${currentTime}`);
-    let sec = currentTime == 0 ? 0 : Math.floor(currentTime / 1000)
+    Logger.debug(`RNOH in ctrl, onVideoProgress currentTime = ${currentTime}`);
+    let sec = currentTime == 0 ? 0 : currentTime / 1000
     let playableDuration = this.mVideoBufferedDuration == 0 ? 0 : this.mVideoBufferedDuration
-    Logger.info(`RNOH in ctrl, onVideoProgress playableDuration = ${playableDuration}`);
+    Logger.debug(`RNOH in ctrl, onVideoProgress playableDuration = ${playableDuration}`);
     let seekableDuration = this.duration == 0 ? 0 : this.duration
-    Logger.info(`RNOH in ctrl, onVideoProgress duration = ${this.duration}`);
-    Logger.info(`RNOH in ctrl, onVideoProgress seekableDuration = ${seekableDuration}`);
+    Logger.debug(`RNOH in ctrl, onVideoProgress duration = ${this.duration}`);
+    Logger.debug(`RNOH in ctrl, onVideoProgress seekableDuration = ${seekableDuration}`);
     this.playPageThis.onVideoProgress(sec, playableDuration, seekableDuration);
   }
 
@@ -543,7 +543,7 @@ export class VideoController {
         this.playPageThis.onVideoLoad(startSecond, this.duration, this.avPlayer.width, this.avPlayer.height, orientationIn)
 
       } else {
-        Logger.info(`RNOH in ctrl getTrackDescription fail, error:${error}`);
+        Logger.debug(`RNOH in ctrl getTrackDescription fail, error:${error}`);
       }
     });
   }
@@ -554,7 +554,7 @@ export class VideoController {
    * @param isBuffering Boolean indicating whether buffering is active
    */
   onVideoBuffer(isBuffering: boolean) {
-    Logger.info(`RNOH in ctrl ,onVideoBuffer out：${JSON.stringify(isBuffering)}`);
+    Logger.debug(`RNOH in ctrl ,onVideoBuffer out：${JSON.stringify(isBuffering)}`);
     this.playPageThis.onVideoBuffer(isBuffering)
   }
 
@@ -562,7 +562,7 @@ export class VideoController {
    * event video onBuffering start
    */
   onVideoPlaybackStalled() {
-    Logger.info(`RNOH in ctrl ,onVideoPlaybackStalled`);
+    Logger.debug(`RNOH in ctrl ,onVideoPlaybackStalled`);
     this.playPageThis.onVideoPlaybackStalled()
   }
 
@@ -570,7 +570,7 @@ export class VideoController {
    * event video onBuffering end
    */
   onVideoPlaybackResume() {
-    Logger.info(`RNOH in ctrl ,onVideoPlaybackResume`);
+    Logger.debug(`RNOH in ctrl ,onVideoPlaybackResume`);
     this.playPageThis.onVideoPlaybackResume()
   }
 
@@ -633,7 +633,7 @@ export class VideoController {
    * An error is reported during network video playback.
    */
   playError(errMsg: string) {
-    Logger.info(`RNOH in ctrl ,onVideoError：${JSON.stringify(errMsg)}`);
+    Logger.debug(`RNOH in ctrl ,onVideoError：${JSON.stringify(errMsg)}`);
     if (this.playPageThis) {
       this.playPageThis.onVideoError(errMsg)
     }

@@ -115,16 +115,16 @@ export struct RNCVideo {
   viewHeight:number = 0
 
   aboutToAppear() {
-    Logger.info(`RNOH in RNCVideo aboutToAppear !}`);
+    Logger.debug(`RNOH in RNCVideo aboutToAppear !}`);
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<VideoViewDescriptor>(this.tag)
-    Logger.info(`RNOH in RNCVideo descriptor props, ${JSON.stringify(this.descriptor.props)}`);
-    Logger.info(`RNOH in RNCVideo descriptor layoutMetrics, ${JSON.stringify(this.descriptor.layoutMetrics)}`);
+    Logger.debug(`RNOH in RNCVideo descriptor props, ${JSON.stringify(this.descriptor.props)}`);
+    Logger.debug(`RNOH in RNCVideo descriptor layoutMetrics, ${JSON.stringify(this.descriptor.layoutMetrics)}`);
     this.unregisterDescriptorChangesListener = this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as VideoViewDescriptor)
         /*------ 当RN侧属性props有更改 -------*/
-        Logger.info(`RNOH in RNCVideo descriptor change, `);
-        Logger.info(`RNOH in RNCVideo newDescriptor props, ${JSON.stringify(this.descriptor.props)}`);
+        Logger.debug(`RNOH in RNCVideo descriptor change, `);
+        Logger.debug(`RNOH in RNCVideo newDescriptor props, ${JSON.stringify(this.descriptor.props)}`);
         this.updatePropFromDesc()
         this.preparePlayer();
       }
@@ -151,9 +151,9 @@ export struct RNCVideo {
         (command, args:(string|number)[]) => {
           if (command === 'seek') {
             //seek
-            Logger.info(`RNOH in RNCVideo: seek,  ${JSON.stringify(args)}`)
-            Logger.info(`RNOH in RNCVideo: seek, time: ${args[0]}`)
-            Logger.info(`RNOH in RNCVideo: seek, tolerance: ${args[1]}`)
+            Logger.debug(`RNOH in RNCVideo: seek,  ${JSON.stringify(args)}`)
+            Logger.debug(`RNOH in RNCVideo: seek, time: ${args[0]}`)
+            Logger.debug(`RNOH in RNCVideo: seek, tolerance: ${args[1]}`)
             this.playVideoModel.setSeekTime(Number(args[0]))
           }
         });
@@ -280,22 +280,22 @@ export struct RNCVideo {
   }
 
   async getFd(){
-    Logger.info(`RNOH in RNCVideo getFd, ${(this.src)}`);
+    Logger.debug(`RNOH in RNCVideo getFd, ${(this.src)}`);
   }
 
   async preparePlayer() {
-    Logger.info(`RNOH in RNCVideo,preparePlayer src= ${(this.srcParam)}`);
+    Logger.debug(`RNOH in RNCVideo,preparePlayer src= ${(this.srcParam)}`);
     if (this.srcParam.startsWith('http')) {
       this.type = CommonConstants.TYPE_INTERNET
       this.src = this.srcParam
-      Logger.info(`RNOH in RNCVideo startsWith, finalsrc: ${(this.src)}`);
+      Logger.debug(`RNOH in RNCVideo startsWith, finalsrc: ${(this.src)}`);
     } else {
-      Logger.info(`RNOH in RNCVideo local, finalsrc: ${(this.src)}`);
+      Logger.debug(`RNOH in RNCVideo local, finalsrc: ${(this.src)}`);
     }
   }
 
   onPageHide() {
-    Logger.info(`RNOH in RNCVideo onPageHide.`);
+    Logger.debug(`RNOH in RNCVideo onPageHide.`);
     this.playVideoModel.pause();
     this.isResume = true;
   }
