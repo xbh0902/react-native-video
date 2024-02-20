@@ -34,6 +34,7 @@ local.properties
 #
 node_modules/
 *.log
+package-lock.json
 
 # yarn
 yarn.lock
@@ -46,3 +47,5 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+
+lib/
