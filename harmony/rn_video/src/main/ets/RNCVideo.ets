@@ -88,7 +88,6 @@ export interface IRNCVideo {
 export struct RNCVideo {
   ctx!: RNOHContext
   tag: number = -1
-  @BuilderParam buildCustomComponent: (componentBuilderContext: ComponentBuilderContext) => void
   @State descriptor: VideoViewDescriptor = {} as VideoViewDescriptor
   private unregisterDescriptorChangesListener?: () => void = undefined
   private cleanupCommandCallback?: () => void = undefined
