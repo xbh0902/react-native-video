@@ -37,9 +37,9 @@ class RNCVideoComponentInstanceFactoryDelegate : public ComponentInstanceFactory
 public:
     using ComponentInstanceFactoryDelegate::ComponentInstanceFactoryDelegate;
 
-    ComponentInstance::Shared create(ComponentInstanceFactoryContext ctx) override {
+    ComponentInstance::Shared create(ComponentInstance::Context ctx) override {
         if (ctx.componentName == "RNCVideo") {
-            return std::make_shared<ArkTSComponentInstance>(m_ctx, ctx.tag);
+            return std::make_shared<ArkTSComponentInstance>(ctx);
         }
         return nullptr;
     }
