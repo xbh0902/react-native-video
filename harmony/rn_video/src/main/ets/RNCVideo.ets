@@ -29,7 +29,7 @@ import {
   RNViewBase,
   ComponentBuilderContext,
   RNComponentFactory
-} from 'rnoh'
+} from '@rnoh/react-native-openharmony'
 
 import { PlayPlayer } from './view/PlayPlayer';
 import { VideoController } from './controller/VideoController';
