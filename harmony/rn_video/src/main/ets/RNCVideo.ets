@@ -29,7 +29,7 @@ import {
   RNViewBase,
   ComponentBuilderContext,
   RNComponentFactory
-} from 'rnoh'
+} from '@rnoh/react-native-openharmony'
 
 import { PlayPlayer } from './view/PlayPlayer';
 import { VideoController } from './controller/VideoController';
@@ -88,7 +88,6 @@ export interface IRNCVideo {
 export struct RNCVideo {
   ctx!: RNOHContext
   tag: number = -1
-  @BuilderParam buildCustomComponent: (componentBuilderContext: ComponentBuilderContext) => void
   @State descriptor: VideoViewDescriptor = {} as VideoViewDescriptor
   private unregisterDescriptorChangesListener?: () => void = undefined
   private cleanupCommandCallback?: () => void = undefined
@@ -146,7 +145,7 @@ export struct RNCVideo {
 
   registerCommandCallback() {
     if (this.ctx){
-      this.cleanupCommandCallback = this.ctx.commandDispatcher.registerCommandCallback(
+      this.cleanupCommandCallback = this.ctx.componentCommandReceiver.registerCommandCallback(
         this.tag,
         (command, args:(string|number)[]) => {
           if (command === 'seek') {
@@ -185,7 +184,7 @@ export struct RNCVideo {
   */
   onVideoLoad(startSecond:number,length:number,widthIn:number,heightIn:number,orientationIn:string) {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onVideoLoad",
         currentPosition : startSecond,
         duration:length,
@@ -204,7 +203,7 @@ export struct RNCVideo {
   //
   onVideoEnd() {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onVideoEnd",
       })
     }
@@ -218,7 +217,7 @@ export struct RNCVideo {
  */
   onVideoLoadStart(cUri: string) {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
         type: "onVideoLoadStart",
         isNetwork: this.descriptor.props.src.isNetwork,
         videoType: this.descriptor.props.src.type,
@@ -229,7 +228,7 @@ export struct RNCVideo {
 
   onReadyForDisplay() {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
         type: "onReadyForDisplay",
       })
     }
@@ -237,7 +236,7 @@ export struct RNCVideo {
 
   onVideoError(err:string) {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onVideoError",
         error : err
       })
@@ -246,7 +245,7 @@ export struct RNCVideo {
 
   onVideoProgress(time:number,_playableDuration:number = 0, _seekableDuration:number = 0) {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onVideoProgress",
         currentTime : time,
         playableDuration : _playableDuration,
@@ -256,7 +255,7 @@ export struct RNCVideo {
   }
   onVideoBuffer(isBufferingIn: boolean) {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onVideoBuffer",
         isBuffering : isBufferingIn
       })
@@ -265,7 +264,7 @@ export struct RNCVideo {
 
   onVideoPlaybackStalled() {
     if (this.ctx){
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onPlaybackStalled"
       })
     }
@@ -273,7 +272,7 @@ export struct RNCVideo {
 
   onVideoPlaybackResume() {
     if (this.ctx) {
-      this.ctx.rnInstanceManager.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
+      this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE,{
         type : "onPlaybackResume"
       })
     }

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {TurboModule, TurboModuleContext} from 'rnoh/ts';
+import {TurboModule, TurboModuleContext} from '@rnoh/react-native-openharmony/ts';
 
 export class RNCVideoTurboModule extends TurboModule {
 
