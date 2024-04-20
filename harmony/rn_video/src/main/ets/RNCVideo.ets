@@ -37,6 +37,7 @@ import { PlayConstants } from './common/constants/PlayConstants';
 
 import { CommonConstants } from './common/constants/CommonConstants';
 import Logger from './common/util/Logger';
+import { display } from '@kit.ArkUI';
 
 class RNCVideoSrcRequestHeaders  {
   key:string = ''
@@ -109,9 +110,16 @@ export struct RNCVideo {
   @Provide('preventsDisplaySleepDuringVideoPlaybackVar') preventsDisplaySleepDuringVideoPlayback: boolean = true; /* 默认true*/
 
   private isResume: boolean = false
-
+  @State
   viewWidth:number = 0
+  @State
   viewHeight:number = 0
+  @Provide
+  videoHeight: number|string = CommonConstants.FULL_PERCENT;
+  @Provide
+  videoWidth: number|string = CommonConstants.FULL_PERCENT;
+  @Provide
+  changedViewWidth:number = 0
 
   aboutToAppear() {
     Logger.debug(`RNOH in RNCVideo aboutToAppear !}`);
@@ -126,6 +134,12 @@ export struct RNCVideo {
         Logger.debug(`RNOH in RNCVideo newDescriptor props, ${JSON.stringify(this.descriptor.props)}`);
         this.updatePropFromDesc()
         this.preparePlayer();
+        this.videoWidth = this.viewWidth
+        if(display.getDefaultDisplaySync().orientation == 0 || display.getDefaultDisplaySync().orientation == 2){
+          this.videoWidth = CommonConstants.FULL_PERCENT;
+        }
+
+
       }
     )
     this.playVideoModel.initPlayPageThis(this as IRNCVideo);
@@ -171,6 +185,7 @@ export struct RNCVideo {
     this.preventsDisplaySleepDuringVideoPlayback = this.descriptor.props.preventsDisplaySleepDuringVideoPlayback
     this.viewWidth = this.descriptor.layoutMetrics.frame.size.width
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
+    this.changedViewWidth = this.viewWidth
   }
 
   /**
