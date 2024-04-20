@@ -77,7 +77,7 @@ export struct PlayPlayer {
   viewWidth:number = 0
   viewHeight:number = 0
   @Consume
-  viewWidth2:number
+  changedViewWidth:number
 
   aboutToAppear() {
     if (this.playVideoModel) {
@@ -145,7 +145,7 @@ export struct PlayPlayer {
         .height(this.videoHeight)
         .scale(this.matrix)
     }
-    .width(this.viewWidth2)
+    .width(this.changedViewWidth)
     .height(this.viewHeight)
     .alignItems(this.videoAlignItems)
     .justifyContent(this.videoJustifyContent)

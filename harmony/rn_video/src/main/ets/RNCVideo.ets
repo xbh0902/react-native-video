@@ -39,7 +39,6 @@ import { CommonConstants } from './common/constants/CommonConstants';
 import Logger from './common/util/Logger';
 import { display } from '@kit.ArkUI';
 
-
 class RNCVideoSrcRequestHeaders  {
   key:string = ''
   value:string =''
@@ -120,7 +119,7 @@ export struct RNCVideo {
   @Provide
   videoWidth: number|string = CommonConstants.FULL_PERCENT;
   @Provide
-  viewWidth2:number = 0
+  changedViewWidth:number = 0
 
   aboutToAppear() {
     Logger.debug(`RNOH in RNCVideo aboutToAppear !}`);
@@ -186,7 +185,7 @@ export struct RNCVideo {
     this.preventsDisplaySleepDuringVideoPlayback = this.descriptor.props.preventsDisplaySleepDuringVideoPlayback
     this.viewWidth = this.descriptor.layoutMetrics.frame.size.width
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
-    this.viewWidth2 = this.viewWidth
+    this.changedViewWidth = this.viewWidth
   }
 
   /**
