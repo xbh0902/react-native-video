@@ -67,14 +67,17 @@ export struct PlayPlayer {
   private xComponentController: XComponentController = new XComponentController();;
   private surfaceID: number = 0;
 
-  @State videoHeight: string = CommonConstants.FULL_PERCENT;
-  @State videoWidth: string = CommonConstants.FULL_PERCENT;
+  @Consume videoHeight: number|string
+  @Consume  videoWidth: number|string
+
   @State videoJustifyContent: FlexAlign = FlexAlign.Center;
   @State videoAlignItems: HorizontalAlign = HorizontalAlign.Center;
   @State matrix: object = Matrix4.identity();
 
   viewWidth:number = 0
   viewHeight:number = 0
+  @Consume
+  viewWidth2:number
 
   aboutToAppear() {
     if (this.playVideoModel) {
@@ -142,7 +145,7 @@ export struct PlayPlayer {
         .height(this.videoHeight)
         .scale(this.matrix)
     }
-    .width(this.viewWidth)
+    .width(this.viewWidth2)
     .height(this.viewHeight)
     .alignItems(this.videoAlignItems)
     .justifyContent(this.videoJustifyContent)
