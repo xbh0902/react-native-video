@@ -21,14 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 import {
   Descriptor,
   RNOHContext,
-  ViewDynamicProps,
   ViewBaseProps,
   RNViewBase,
-  ComponentBuilderContext,
-  RNComponentFactory
 } from '@rnoh/react-native-openharmony'
 
 import { PlayPlayer } from './view/PlayPlayer';
@@ -120,9 +118,11 @@ export struct RNCVideo {
   videoWidth: number|string = CommonConstants.FULL_PERCENT;
   @Provide
   changedViewWidth:number = 0
+  @Provide
+  changedviewHeight:number = 0
 
   aboutToAppear() {
-    Logger.debug(`RNOH in RNCVideo aboutToAppear !}`);
+    Logger.debug(`RNOH in RNCVideo aboutToAppear 修改后 !}`);
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<VideoViewDescriptor>(this.tag)
     Logger.debug(`RNOH in RNCVideo descriptor props, ${JSON.stringify(this.descriptor.props)}`);
     Logger.debug(`RNOH in RNCVideo descriptor layoutMetrics, ${JSON.stringify(this.descriptor.layoutMetrics)}`);
@@ -135,8 +135,10 @@ export struct RNCVideo {
         this.updatePropFromDesc()
         this.preparePlayer();
         this.videoWidth = this.viewWidth
+        this.videoHeight = this.viewHeight
         if(display.getDefaultDisplaySync().orientation == 0 || display.getDefaultDisplaySync().orientation == 2){
           this.videoWidth = CommonConstants.FULL_PERCENT;
+          this.videoHeight = CommonConstants.FULL_PERCENT;
         }
 
 
@@ -186,6 +188,7 @@ export struct RNCVideo {
     this.viewWidth = this.descriptor.layoutMetrics.frame.size.width
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
     this.changedViewWidth = this.viewWidth
+    this.changedviewHeight = this.viewHeight
   }
 
   /**
