@@ -328,6 +328,11 @@ export struct RNCVideo {
         .align(Alignment.Center)
         .height(this.viewHeight)
         .width(this.viewWidth)
+        .onDisAppear(() => {
+          this.unregisterDescriptorChangesListener?.()
+          this.cleanupCommandCallback?.()
+          this.playVideoModel.release();
+        })
     }
   }
 }
