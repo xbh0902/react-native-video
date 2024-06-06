@@ -180,11 +180,6 @@ export struct RNCVideo {
     this.muted = this.descriptor.props.muted
     this.paused = this.descriptor.props.paused
     this.resizeMode = this.descriptor.props.resizeMode
-    if(this.resizeMode === 'cover')
-    {
-      this.videoHeight = this.viewHeight
-    }
-
     this.repeat = this.descriptor.props.repeat
     this.volume = this.descriptor.props.volume
     this.srcParam = this.descriptor.props.src.uri
@@ -194,6 +189,10 @@ export struct RNCVideo {
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
     this.changedViewWidth = this.viewWidth
     this.changedviewHeight = this.viewHeight
+    if(this.resizeMode === 'cover')
+    {
+      this.videoHeight = this.viewHeight
+    }
   }
 
   /**
