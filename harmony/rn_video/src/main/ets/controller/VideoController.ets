@@ -363,7 +363,7 @@ export class VideoController {
       this.status === CommonConstants.STATUS_PAUSE ||
       this.status === CommonConstants.STATUS_COMPLETED
     ) {
-      this.avPlayer.seek(this.seekTime);
+      this.avPlayer.seek(this.seekTime, media.SeekMode.SEEK_CLOSEST);
       Logger.debug(`RNOH in ctrl avPlayer.seek`);
     }
   }
