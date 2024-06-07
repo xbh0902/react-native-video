@@ -181,7 +181,7 @@ export class VideoController {
           this.watchStatus();
           break;
         case AvplayerStatus.COMPLETED:
-          this.duration = PlayConstants.PLAY_PLAYER.DURATION;
+          //this.duration = PlayConstants.PLAY_PLAYER.DURATION;
           this.status = CommonConstants.STATUS_COMPLETED;
           this.watchStatus();
           /* 20231227 - reset重置是为切换上下一个资源，以及列表序列播放场景下对AVplayer重置，使AVplayer进入idle状态，这里不用 */
