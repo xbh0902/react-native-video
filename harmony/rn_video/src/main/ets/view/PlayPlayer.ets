@@ -27,6 +27,7 @@ import { CommonConstants } from '../common/constants/CommonConstants';
 import { PlayConstants } from '../common/constants/PlayConstants';
 import Logger from '../common/util/Logger';
 import Matrix4 from '@ohos.matrix4'
+import mediaquery from '@ohos.mediaquery'
 
 export interface IPlayPlayer {
   src: string
@@ -81,7 +82,11 @@ export struct PlayPlayer {
   @Consume
   changedviewHeight:number
 
+  private orientationChange: boolean = true
+
+  listener = mediaquery.matchMediaSync('(orientation: landscape)')
   aboutToAppear() {
+    this.listenScreenDirection()
     if (this.playVideoModel) {
       this.playVideoModel.initPlayerThis(this as IPlayPlayer);
     }
@@ -122,6 +127,14 @@ export struct PlayPlayer {
     this.playVideoModel.setPreventsDisplaySleepDuringVideoPlaybackModifier(this.preventsDisplaySleepDuringVideoPlayback);
   }
 
+  listenScreenDirection()  {
+    this.listener.on('change',(mediaQueryResult:mediaquery.MediaQueryResult)=>{
+      this.orientationChange = false
+    })
+
+  }
+
+
   build() {
     Column() {
       XComponent({
@@ -146,11 +159,15 @@ export struct PlayPlayer {
         .width(this.videoWidth)
         .height(this.videoHeight)
         .scale(this.matrix)
-        .onVisibleAreaChange([0.0,1.0],(isVisble:boolean,currentRatio:number)=>{
-           if (isVisble && currentRatio >= 0.7) {
+        .onVisibleAreaChange([0.0, 1.0], (isVisble: boolean, currentRatio: number) => {
+          if (isVisble && currentRatio >= 0.7) {
             this.playVideoModel.switchPlayOrPause(false)
           }
           if (!isVisble && currentRatio <= 1.0) {
+            if (!this.orientationChange) {
+              this.orientationChange = true
+              return
+            }
             this.playVideoModel.pause()
           }
         })
