@@ -50,7 +50,7 @@ export interface IPlayPlayer {
 
 @Component
 export struct PlayPlayer {
-  private playVideoModel!: VideoController;
+  private playVideoModel: VideoController = new VideoController();
   @Consume('srcVar') @Watch("onSrcChanged") src: string;// 视频src
   @Consume index: number;
   @Consume('mutedVar')  @Watch("onMutedChanged") muted: boolean ;
@@ -161,14 +161,14 @@ export struct PlayPlayer {
         .scale(this.matrix)
         .onVisibleAreaChange([0.0, 1.0], (isVisble: boolean, currentRatio: number) => {
           if (isVisble && currentRatio >= 0.7) {
-            this.playVideoModel.switchPlayOrPause(false)
+            this.playVideoModel?.switchPlayOrPause(false)
           }
           if (!isVisble && currentRatio <= 1.0) {
             if (!this.orientationChange) {
               this.orientationChange = true
               return
             }
-            this.playVideoModel.pause()
+            this.playVideoModel?.pause()
           }
         })
     }
