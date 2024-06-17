@@ -60,8 +60,8 @@ export class VideoController {
   /**
    * Creates a videoPlayer object.
    */
-  createAVPlayer() {
-    media.createAVPlayer().then((avPlayer) => {
+   createAVPlayer() {
+     media.createAVPlayer().then((avPlayer) => {
       if (avPlayer) {
         Logger.debug(`RNOH in ctrl, createAVPlayer isNull: ${avPlayer == null}`);
         this.avPlayer = avPlayer;
@@ -223,14 +223,14 @@ export class VideoController {
    * Release the video player.
    */
   release() {
-    this.avPlayer.release();
+    this.avPlayer?.release();
   }
 
   /**
    * Pause Playing.
    */
   pause() {
-    this.avPlayer.pause();
+    this.avPlayer?.pause();
   }
 
   /**
@@ -250,7 +250,7 @@ export class VideoController {
       return;
     }
     this.playSpeed = playSpeed;
-    this.avPlayer.setSpeed(this.playSpeed);
+    this.avPlayer?.setSpeed(this.playSpeed);
   }
 
   /**
@@ -285,11 +285,11 @@ export class VideoController {
    * Switching Between Video Play and Pause.
    */
   switchPlayOrPause(paused: boolean) {
-    Logger.debug(`RNOH in ctrl switchPlayOrPause,state out= ${this.avPlayer.state};paused= ${JSON.stringify(paused)}`);
+    Logger.debug(`RNOH in ctrl switchPlayOrPause,state out= ${this.avPlayer?.state};paused= ${JSON.stringify(paused)}`);
     if (paused) {
-      this.avPlayer.pause();
+      this.avPlayer?.pause();
     } else {
-      this.avPlayer.play();
+      this.avPlayer?.play();
     }
   }
 
