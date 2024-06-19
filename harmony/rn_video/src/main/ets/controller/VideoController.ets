@@ -25,7 +25,7 @@
 import media from '@ohos.multimedia.media';
 import audio from '@ohos.multimedia.audio';
 import Logger from '../common/util/Logger';
-import { AvplayerStatus, CommonConstants, Events } from '../common/constants/CommonConstants';
+import { AvplayerStatus, CommonConstants, Events, ResizeMode } from '../common/constants/CommonConstants';
 import { PlayConstants } from '../common/constants/PlayConstants';
 import { AudioTracksBean, VideoTracksBean } from '../common/bean/AudioTracksBean';
 import { IPlayPlayer } from '../view/PlayPlayer';
@@ -403,14 +403,14 @@ export class VideoController {
   convertResizeMode(resizeModeB: string): void {
     this.playerThis.matrix = Matrix4.identity();
     switch (resizeModeB) {
-      case "none":
+      case ResizeMode.NONE:
         this.playerThis.videoJustifyContent = FlexAlign.Start;
         this.playerThis.videoAlignItems = HorizontalAlign.Start;
         this.avPlayer.videoScaleType = media.VideoScaleType.VIDEO_SCALE_TYPE_FIT_CROP;
         this.playerThis.videoWidth = `${px2vp(this.avPlayer.width).toFixed(2)}`;
         this.playerThis.videoHeight = `${px2vp(this.avPlayer.height).toFixed(2)}`;
         break;
-      case "contain": // 保持视频宽高比，居中播放。
+      case ResizeMode.CONTAIN:
         this.playerThis.videoJustifyContent = FlexAlign.Center;
         this.playerThis.videoAlignItems = HorizontalAlign.Center;
         this.avPlayer.videoScaleType = media.VideoScaleType.VIDEO_SCALE_TYPE_FIT_CROP;
@@ -425,7 +425,7 @@ export class VideoController {
           this.playerThis.videoHeight = `${height}%`;
         }
             break;
-      case "cover": // 保持视频宽高比拉伸至填满窗口，内容可能会有裁剪。
+      case ResizeMode.COVER: // 保持视频宽高比拉伸至填满窗口，内容可能会有裁剪。
         this.playerThis.videoJustifyContent = FlexAlign.Center;
         this.playerThis.videoAlignItems = HorizontalAlign.Center;
       /* 这种模式，取视频最小的边同窗口比进行缩放，最小边填满窗口最小边 */
@@ -433,24 +433,22 @@ export class VideoController {
         if (this.avPlayer.height > this.avPlayer.width) { // 视频为竖屏
           this.playerThis.videoWidth = CommonConstants.FULL_PERCENT; // 竖屏则宽度满屏，进行高度比例放大
           let height = (CommonConstants.ONE_HUNDRED * this.avPlayer.height / this.avPlayer.width).toFixed(2);
-          // this.playerThis.videoHeight = `${height}%`;
           this.playerThis.videoHeight = CommonConstants.FULL_PERCENT;
           this.playerThis.matrix = Matrix4.identity()
             .scale({x:1, y:Number.parseFloat(height)/100});
         } else {
           this.playerThis.videoHeight = CommonConstants.FULL_PERCENT; // 横屏则高度满屏，进行宽度比例放大
           let width = (CommonConstants.ONE_HUNDRED * this.avPlayer.width / this.avPlayer.height).toFixed(2);
-          // this.playerThis.videoWidth = `${width}%`;
           this.playerThis.videoWidth = CommonConstants.FULL_PERCENT;
           this.playerThis.matrix = Matrix4.identity()
             .scale({x:Number.parseFloat(width)/100, y:1});
         }
         break;
-      case "stretch": // 视频拉伸至与窗口等大。
+      case ResizeMode.STRETCH:
         this.playerThis.videoJustifyContent = FlexAlign.Center;
         this.playerThis.videoAlignItems = HorizontalAlign.Center;
         this.avPlayer.videoScaleType = media.VideoScaleType.VIDEO_SCALE_TYPE_FIT;
-      /* 这里则不分横竖屏，直接视频尺寸等于窗口尺寸*/
+        /* 这里则不分横竖屏，直接视频尺寸等于窗口尺寸*/
         this.playerThis.videoWidth = CommonConstants.FULL_PERCENT;
         this.playerThis.videoHeight = CommonConstants.FULL_PERCENT;
         break;
@@ -602,7 +600,7 @@ export class VideoController {
           /* 设置音频流类型为视频，获取视频 音视频打断*/
           let audioRendererInfo = {
             content: audio.ContentType.CONTENT_TYPE_MOVIE,
-            usage: audio.StreamUsage.STREAM_USAGE_MEDIA, // 媒体，打断其他，获取音频焦点播放
+            usage: audio.StreamUsage.STREAM_USAGE_MEDIA,
             rendererFlags: 0
           } as audio.AudioRendererInfo;
           this.avPlayer.audioRendererInfo = audioRendererInfo;

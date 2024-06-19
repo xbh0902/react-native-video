@@ -32,7 +32,7 @@ import {
 import { PlayPlayer } from './view/PlayPlayer';
 import { VideoController } from './controller/VideoController';
 import { PlayConstants } from './common/constants/PlayConstants';
-import { CommonConstants } from './common/constants/CommonConstants';
+import { CommonConstants, ResizeMode } from './common/constants/CommonConstants';
 import Logger from './common/util/Logger';
 import { display } from '@kit.ArkUI';
 
@@ -68,6 +68,7 @@ export const RNC_VIDEO_TYPE: string = "RNCVideo"
 
 export type VideoViewDescriptor = Descriptor<'RNCVideo', RNCVideoProps>
 // export type VideoViewDescriptor = Descriptor<RNC_VIDEO_TYPE, RNCVideoProps>
+const RNC_VIDEO_SEEK:string = 'seek'
 
 export interface IRNCVideo {
   videoMargin: string
@@ -124,7 +125,7 @@ export struct RNCVideo {
   changedviewHeight: number = 0;
 
   aboutToAppear(): void {
-    Logger.debug(TAG, `aboutToAppear 修改后!`);
+    Logger.debug(TAG, `aboutToAppear 修改后 !}`);
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<VideoViewDescriptor>(this.tag);
     Logger.debug(TAG, `descriptor props, ${JSON.stringify(this.descriptor.props)}`);
     Logger.debug(TAG, `descriptor layoutMetrics, ${JSON.stringify(this.descriptor.layoutMetrics)}`);
@@ -164,7 +165,7 @@ export struct RNCVideo {
       this.cleanupCommandCallback = this.ctx.componentCommandReceiver.registerCommandCallback(
         this.tag,
         (command, args:(string|number)[]) => {
-          if (command === 'seek') {
+          if (command === RNC_VIDEO_SEEK) {
             Logger.debug(TAG, `seek,  ${JSON.stringify(args)}`);
             Logger.debug(TAG, `seek,  time: ${args[0]}`);
             Logger.debug(TAG, `seek,  tolerance: ${args[1]}`);
@@ -188,7 +189,7 @@ export struct RNCVideo {
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
     this.changedViewWidth = this.viewWidth
     this.changedviewHeight = this.viewHeight
-    if(this.resizeMode === 'cover'){
+    if(this.resizeMode === ResizeMode.COVER) {
       this.videoHeight = this.viewHeight
     }
   }

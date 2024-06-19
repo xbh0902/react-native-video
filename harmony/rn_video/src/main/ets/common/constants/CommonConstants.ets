@@ -161,3 +161,10 @@ export enum Events {
   BUFFERING_UPDATE = 'bufferingUpdate',
   SEEK_DONE = 'seekDone'
 }
+
+export enum ResizeMode {
+  NONE = 'none',
+  CONTAIN = 'contain',
+  COVER = 'cover',
+  STRETCH = 'stretch',
+}
