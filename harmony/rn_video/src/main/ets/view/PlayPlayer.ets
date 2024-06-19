@@ -48,6 +48,8 @@ export interface IPlayPlayer {
   matrix: Matrix4.Matrix4Transit
 }
 
+const TAG: string = 'RNOH in ctrl'
+
 @Component
 export struct PlayPlayer {
   private playVideoModel: VideoController = new VideoController();
@@ -65,29 +67,29 @@ export struct PlayPlayer {
   /* 不需要显示 */
   @State volumeShow: boolean = PlayConstants.PLAY_PAGE.VOLUME_SHOW;
   @State brightShow: boolean = PlayConstants.PLAY_PAGE.BRIGHT_SHOW;
-  private xComponentController: XComponentController = new XComponentController();;
+  private xComponentController: XComponentController = new XComponentController();
   private surfaceID: number = 0;
 
-  @Consume videoHeight: number|string
-  @Consume  videoWidth: number|string
+  @Consume videoHeight: number|string;
+  @Consume  videoWidth: number|string;
 
   @State videoJustifyContent: FlexAlign = FlexAlign.Center;
   @State videoAlignItems: HorizontalAlign = HorizontalAlign.Center;
   @State matrix: object = Matrix4.identity();
 
-  viewWidth: number = 0
-  viewHeight: number = 0
+  viewWidth: number = 0;
+  viewHeight: number = 0;
   @Consume
-  changedViewWidth: number
+  changedViewWidth: number;
   @Consume
-  changedviewHeight: number
+  changedviewHeight: number;
 
-  private orientationChange: boolean = true
+  private orientationChange: boolean = true;
 
-  listener = mediaquery.matchMediaSync('(orientation: landscape)')
+  listener = mediaquery.matchMediaSync('(orientation: landscape)');
 
   aboutToAppear(): void {
-    this.listenScreenDirection()
+    this.listenScreenDirection();
     if (this.playVideoModel) {
       this.playVideoModel.initPlayerThis(this as IPlayPlayer);
     }
@@ -95,33 +97,33 @@ export struct PlayPlayer {
 
   // @Watch cb
   onChanged(propName: string) : void {
-    Logger.debug(`RNOH in Player, onChanged,propName= ${JSON.stringify(propName)}`);
-    Logger.debug(`RNOH in Player, onChanged,volume= ${JSON.stringify(this.volume)}`);
-    Logger.debug(`RNOH in Player, onChanged,resizeMode= ${JSON.stringify(this.resizeMode)}`);
-    Logger.debug(`RNOH in Player, onChanged,disableFocus= ${JSON.stringify(this.disableFocus)}`);
+    Logger.debug(TAG, `onChanged,propName= ${JSON.stringify(propName)}`);
+    Logger.debug(TAG, `onChanged,volume= ${JSON.stringify(this.volume)}`);
+    Logger.debug(TAG, `onChanged,resizeMode= ${JSON.stringify(this.resizeMode)}`);
+    Logger.debug(TAG, `onChanged,disableFocus= ${JSON.stringify(this.disableFocus)}`);
     if (this.playVideoModel) {
-      this.playVideoModel.updateProp()
+      this.playVideoModel.updateProp();
     }
   }
 
   onSrcChanged(propName: string) : void {
-    Logger.debug(`RNOH in Player, onSrcChanged,srcout: ${JSON.stringify(this.src)}`);
-    Logger.debug(`RNOH in Player, onSrcChanged,propName: ${JSON.stringify(propName)}`);
+    Logger.debug(TAG, `onSrcChanged,srcout: ${JSON.stringify(this.src)}`);
+    Logger.debug(TAG, `onSrcChanged,propName: ${JSON.stringify(propName)}`);
     this.playVideoModel.switchVideo(this.src);
   }
 
   onRepeatChanged(propName: string) : void {
-    Logger.debug(`RNOH in Player, onRepeatChange, ${JSON.stringify(this.repeat)}`);
+    Logger.debug(TAG, `onRepeatChange, ${JSON.stringify(this.repeat)}`);
     this.playVideoModel.switchRepeat(this.repeat);
   }
 
   onMutedChanged(propName: string) : void {
-    Logger.debug(`RNOH in Player, onMutedChanged, ${JSON.stringify(this.muted)}`);
+    Logger.debug(TAG, `onMutedChanged, ${JSON.stringify(this.muted)}`);
     this.playVideoModel.switchMuted(this.muted);
   }
 
   onPausedChanged(propName: string) : void {
-    Logger.debug(`RNOH in Player, onPausedChanged, ${JSON.stringify(this.paused)}`);
+    Logger.debug(TAG, `onPausedChanged, ${JSON.stringify(this.paused)}`);
     this.playVideoModel.switchPlayOrPause(this.paused);
   }
 
@@ -151,7 +153,7 @@ export struct PlayPlayer {
             surfaceHeight: PlayConstants.PLAY_PLAYER.SURFACE_HEIGHT
           });
           this.surfaceID = Number(this.xComponentController.getXComponentSurfaceId());
-          Logger.debug(`RNOH in Player, tofirstPlay, ${JSON.stringify(this.src)}`);
+          Logger.debug(TAG, `tofirstPlay, ${JSON.stringify(this.src)}`);
           if (this.src == '') {
             this.playVideoModel.firstPlay(this.index, this.src, this.surfaceID);
           } else {
@@ -163,20 +165,20 @@ export struct PlayPlayer {
         .scale(this.matrix)
         .onVisibleAreaChange([0.0, 1.0], (isVisble: boolean, currentRatio: number) => {
           if (isVisble && currentRatio >= 0.7) {
-            this.playVideoModel?.switchPlayOrPause(false)
+            this.playVideoModel?.switchPlayOrPause(false);
           }
           if (!isVisble && currentRatio <= 1.0) {
             if (!this.orientationChange) {
-              this.orientationChange = true
+              this.orientationChange = true;
               return
             }
-            this.playVideoModel?.pause()
+            this.playVideoModel?.pause();
           }
         })
     }
     .width(this.changedViewWidth)
     .height(this.changedviewHeight)
     .alignItems(this.videoAlignItems)
-    .justifyContent(this.videoJustifyContent)
+    .justifyContent(this.videoJustifyContent);
   }
 }
