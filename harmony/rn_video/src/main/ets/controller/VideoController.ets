@@ -60,7 +60,7 @@ export class VideoController {
   /**
    * Creates a videoPlayer object.
    */
-   createAVPlayer() {
+   createAVPlayer(): void {
      media.createAVPlayer().then((avPlayer) => {
       if (avPlayer) {
         Logger.debug(`RNOH in ctrl, createAVPlayer isNull: ${avPlayer == null}`);
@@ -83,7 +83,7 @@ export class VideoController {
   /**
    * AVPlayer binding event.
    */
-  bindState() {
+  bindState(): void {
     Logger.debug(`RNOH in ctrl, bindState`);
     if (this.avPlayer){
 
@@ -145,7 +145,7 @@ export class VideoController {
    * @param null
    * @return null
    */
-  onStateChange() {
+  onStateChange(): void {
     this.avPlayer.on(Events.STATE_CHANGE, async (state) => {
       switch (state) {
         case AvplayerStatus.IDLE:
@@ -207,7 +207,7 @@ export class VideoController {
    * @param url Playback Path.
    * @param surfaceId Indicates the surface ID of the surfaceId.
    */
-  firstPlay(index: number, url: string, surfaceId: number) {
+  firstPlay(index: number, url: string, surfaceId: number): void {
     this.index = index;
     this.url = url;
     this.surfaceId = surfaceId;
@@ -222,21 +222,21 @@ export class VideoController {
   /**
    * Release the video player.
    */
-  release() {
+  release(): void {
     this.avPlayer?.release();
   }
 
   /**
    * Pause Playing.
    */
-  pause() {
+  pause(): void {
     this.avPlayer?.pause();
   }
 
   /**
    * Playback mode. The options are as follows: true: playing a single video; false: playing a cyclic video.
    */
-  setLoop() {
+  setLoop(): void {
     this.loop = !this.loop;
   }
 
@@ -245,7 +245,7 @@ export class VideoController {
    *
    * @param playSpeed Current playback speed.
    */
-  setSpeed(playSpeed: number) {
+  setSpeed(playSpeed: number): void {
     if (CommonConstants.OPERATE_STATE.indexOf(this.avPlayer.state) === -1) {
       return;
     }
@@ -257,7 +257,7 @@ export class VideoController {
    * @brief 切换视频播放
    * @return
    */
-  switchVideo(newUrl: string) {
+  switchVideo(newUrl: string): void {
     Logger.debug(`RNOH in ctrl switchVideo,  state ${JSON.stringify(this.avPlayer.state)}`);
     this.bindState();
     Logger.debug(`RNOH in ctrl switchVideo, 100`);
@@ -284,16 +284,16 @@ export class VideoController {
   /**
    * Switching Between Video Play and Pause.
    */
-  switchPlayOrPause(paused: boolean) {
+  switchPlayOrPause(paused: boolean): void {
     Logger.debug(`RNOH in ctrl switchPlayOrPause,state out= ${this.avPlayer?.state};paused= ${JSON.stringify(paused)}`);
     if (paused) {
       this.avPlayer?.pause();
     } else {
-      this.avPlayer?.play();
+      this.avPlayer?.play();``
     }
   }
 
-  switchRepeat(repeat: boolean) {
+  switchRepeat(repeat: boolean): void {
     this.loop = repeat
     Logger.debug(`RNOH in ctrl, switchRepeat, ${JSON.stringify(repeat)}`);
     Logger.debug(`RNOH in ctrl, switchRepeat, ${JSON.stringify(this.playerThis.repeat)}`);
@@ -310,16 +310,15 @@ export class VideoController {
   /**
    * Switching Between Video muted and voice.
    */
-  switchMuted(muted: boolean) {
+  switchMuted(muted: boolean): void {
     this.mMuted = muted
     let currentVolume = this.playerThis.volume
     if (muted) {
       currentVolume = 0
-    }
-    else {
+    } else {
       if (this.preMutedVolume > 0) {
         currentVolume = this.preMutedVolume
-      }else {
+      } else {
         currentVolume = 1.0
       }
     }
@@ -340,7 +339,7 @@ export class VideoController {
   }
 
   /* 设置播放时屏幕不息屏 -- 暂无HM接口支持*/
-  setPreventsDisplaySleepDuringVideoPlaybackModifier(preventsDisplaySleepDuringVideoPlayback: boolean) {
+  setPreventsDisplaySleepDuringVideoPlaybackModifier(preventsDisplaySleepDuringVideoPlayback: boolean): void {
     this.mPreventsDisplaySleepDuringVideoPlayback = preventsDisplaySleepDuringVideoPlayback
 
     /* mMediaPlayer.setScreenOnWhilePlaying(mPreventsDisplaySleepDuringVideoPlayback);
@@ -353,7 +352,7 @@ export class VideoController {
    * @param value 目标位置，毫秒
    * @return
    */
-  setSeekTime(value: number) {
+  setSeekTime(value: number): void {
     Logger.debug(`RNOH in ctrl setSeekTime== ${JSON.stringify(value)}`);
     this.seekTime = value*1000;
     Logger.debug(`RNOH in ctrl setSeekTime== ${this.seekTime}`);
@@ -369,7 +368,7 @@ export class VideoController {
   }
 
   /* 初始化播放器状态 */
-  initProps() {
+  initProps(): void {
 
     Logger.debug(`RNOH in ctrl, initProps repeat, ${JSON.stringify(this.playerThis.repeat)}`);
     this.avPlayer.loop = this.playerThis.repeat;
@@ -383,7 +382,7 @@ export class VideoController {
   }
 
   /* 更新属性 */
-  updateProp() {
+  updateProp(): void {
     /* 设置 需要特定状态下设置*/
     if (this.avPlayer != null) {
       Logger.debug(`RNOH in ctrl, updateProp volume, ${JSON.stringify(this.playerThis.volume)}`);
@@ -399,7 +398,7 @@ export class VideoController {
 
   }
 
-  convertResizeMode(resizeModeB: string) {
+  convertResizeMode(resizeModeB: string): void {
     this.playerThis.matrix = Matrix4.identity()
     switch (resizeModeB) {
       case "none":
@@ -461,7 +460,7 @@ export class VideoController {
   /**
    * Obtains the current video playing status.
    */
-  getStatus() {
+  getStatus(): number {
     return this.status;
   }
 
@@ -471,7 +470,7 @@ export class VideoController {
    * @param playerThis PlayPlayer this object.
    *
    */
-  initPlayerThis(playerThis:IPlayPlayer) {
+  initPlayerThis(playerThis:IPlayPlayer): void {
     if (playerThis == null) {
       Logger.debug(`RNOH in ctrl, initPlayerThis is null .`);
     }
@@ -483,7 +482,7 @@ export class VideoController {
    * setSrc()->mEventEmitter.receiveEvent
    * @param cUri: 当前视频URL
    */
-  onVideoLoadStart(cUri: string) {
+  onVideoLoadStart(cUri: string): void {
     Logger.debug(`RNOH in ctrl, onVideoLoadStart URL: ${cUri}`);
     this.playPageThis.onVideoLoadStart(cUri);
   }
@@ -494,7 +493,7 @@ export class VideoController {
    * @date 2023/10/19 17:44
    * @return null
    */
-  onReadyForDisplay() {
+  onReadyForDisplay(): void {
     Logger.debug(`RNOH in ctrl, onReadyForDisplay`);
     this.playPageThis.onReadyForDisplay();
   }
@@ -504,7 +503,7 @@ export class VideoController {
    * currentTime is ms
    * @param time Current video playback time.
    */
-  onVideoProgress(currentTime: number) {
+  onVideoProgress(currentTime: number): void {
     Logger.debug(`RNOH in ctrl, onVideoProgress currentTime = ${currentTime}`);
     let sec = currentTime == 0 ? 0 : currentTime / 1000
     let playableDuration = this.mVideoBufferedDuration == 0 ? 0 : this.mVideoBufferedDuration
@@ -518,7 +517,7 @@ export class VideoController {
   /**
    * video completed call
    */
-  onVideoEnd() {
+  onVideoEnd(): void {
     this.playPageThis.onVideoEnd();
   }
 
@@ -527,7 +526,7 @@ export class VideoController {
    * @param time Current video playback time.
    * getTrackDescription 可以在prepared/playing/paused状态调用。
    */
-  onVideoLoad(time: number) {
+  onVideoLoad(time: number): void {
     let startSecond = time == 0 ? 0 : Math.floor(time / 1000)
     let orientationIn = "landscape" // 对标安卓 if (mp.getVideoWidth() > mp.getVideoHeight())
     if (this.avPlayer.width > this.avPlayer.height) {
@@ -553,7 +552,7 @@ export class VideoController {
    *
    * @param isBuffering Boolean indicating whether buffering is active
    */
-  onVideoBuffer(isBuffering: boolean) {
+  onVideoBuffer(isBuffering: boolean): void {
     Logger.debug(`RNOH in ctrl ,onVideoBuffer out：${JSON.stringify(isBuffering)}`);
     this.playPageThis.onVideoBuffer(isBuffering)
   }
@@ -561,7 +560,7 @@ export class VideoController {
   /**
    * event video onBuffering start
    */
-  onVideoPlaybackStalled() {
+  onVideoPlaybackStalled(): void {
     Logger.debug(`RNOH in ctrl ,onVideoPlaybackStalled`);
     this.playPageThis.onVideoPlaybackStalled()
   }
@@ -569,7 +568,7 @@ export class VideoController {
   /**
    * event video onBuffering end
    */
-  onVideoPlaybackResume() {
+  onVideoPlaybackResume(): void {
     Logger.debug(`RNOH in ctrl ,onVideoPlaybackResume`);
     this.playPageThis.onVideoPlaybackResume()
   }
@@ -578,7 +577,7 @@ export class VideoController {
    * Reset progress bar data.
    * @Deprecated luoxf 0707
    */
-  resetProgress() {
+  resetProgress(): void {
     this.seekTime = PlayConstants.PLAY_PROGRESS.SEEK_TIME;
   }
 
@@ -586,7 +585,7 @@ export class VideoController {
    * Sets whether the screen is a constant based on the playback status.
    * Add avplayer InterruptMode based on the playback status.
    */
-  watchStatus() {
+  watchStatus(): void {
     /* disableFocus 属性触发 1、屏幕常亮 2、申请音频焦点--鸿蒙系统管理音频焦点，只需注入音频streamtype*/
     // if (this.status === CommonConstants.STATUS_START && this.playerThis.disableFocus) {
     //   globalThis.windowClass.setWindowKeepScreenOn(true);
@@ -625,14 +624,14 @@ export class VideoController {
    *
    * @param playPageThis This object of PlayPage.
    */
-  initPlayPageThis(playPageThis: IRNCVideo) {
+  initPlayPageThis(playPageThis: IRNCVideo): void {
     this.playPageThis = playPageThis;
   }
 
   /**
    * An error is reported during network video playback.
    */
-  playError(errMsg: string) {
+  playError(errMsg: string): void {
     Logger.debug(`RNOH in ctrl ,onVideoError：${JSON.stringify(errMsg)}`);
     if (this.playPageThis) {
       this.playPageThis.onVideoError(errMsg)

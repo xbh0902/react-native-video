@@ -75,22 +75,24 @@ export struct PlayPlayer {
   @State videoAlignItems: HorizontalAlign = HorizontalAlign.Center;
   @State matrix: object = Matrix4.identity();
 
-  viewWidth:number = 0
-  viewHeight:number = 0
+  viewWidth: number = 0
+  viewHeight: number = 0
   @Consume
-  changedViewWidth:number
+  changedViewWidth: number
   @Consume
-  changedviewHeight:number
+  changedviewHeight: number
 
   private orientationChange: boolean = true
 
   listener = mediaquery.matchMediaSync('(orientation: landscape)')
-  aboutToAppear() {
+
+  aboutToAppear(): void {
     this.listenScreenDirection()
     if (this.playVideoModel) {
       this.playVideoModel.initPlayerThis(this as IPlayPlayer);
     }
   }
+
   // @Watch cb
   onChanged(propName: string) : void {
     Logger.debug(`RNOH in Player, onChanged,propName= ${JSON.stringify(propName)}`);
@@ -123,11 +125,11 @@ export struct PlayPlayer {
     this.playVideoModel.switchPlayOrPause(this.paused);
   }
 
-  setPreventsDisplaySleepDuringVideoPlaybackModifier(propName: string):void{
+  setPreventsDisplaySleepDuringVideoPlaybackModifier(propName: string) : void {
     this.playVideoModel.setPreventsDisplaySleepDuringVideoPlaybackModifier(this.preventsDisplaySleepDuringVideoPlayback);
   }
 
-  listenScreenDirection()  {
+  listenScreenDirection(): void  {
     this.listener.on('change',(mediaQueryResult:mediaquery.MediaQueryResult)=>{
       this.orientationChange = false
     })
