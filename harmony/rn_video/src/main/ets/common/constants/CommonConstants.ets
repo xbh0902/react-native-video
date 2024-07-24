@@ -168,3 +168,9 @@ export enum ResizeMode {
   COVER = 'cover',
   STRETCH = 'stretch',
 }
+
+export class CurrentTime {
+  static readonly CURRENTTIME_MINUS_ONE: number = -1;
+  static readonly CURRENTTIME_ZERO: number = 0;
+}
+
