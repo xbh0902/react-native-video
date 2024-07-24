@@ -25,7 +25,7 @@
 import media from '@ohos.multimedia.media';
 import audio from '@ohos.multimedia.audio';
 import Logger from '../common/util/Logger';
-import { AvplayerStatus, CommonConstants, Events, ResizeMode } from '../common/constants/CommonConstants';
+import { AvplayerStatus, CommonConstants, Events, ResizeMode,CurrentTime } from '../common/constants/CommonConstants';
 import { PlayConstants } from '../common/constants/PlayConstants';
 import { AudioTracksBean, VideoTracksBean } from '../common/bean/AudioTracksBean';
 import { IPlayPlayer } from '../view/PlayPlayer';
@@ -171,10 +171,10 @@ export class VideoController {
           }else {
             this.avPlayer.play();
           }
+          let startSecond = (this.avPlayer.currentTime == CurrentTime.CURRENTTIME_MINUS_ONE ? CurrentTime.CURRENTTIME_ZERO : this.avPlayer.currentTime);
+          this.onVideoLoad(startSecond);
           break;
         case AvplayerStatus.PLAYING:
-          let startSecond = (this.avPlayer.currentTime == -1 ? 0 : this.avPlayer.currentTime);
-          this.onVideoLoad(startSecond);
           this.onReadyForDisplay();
           this.status = CommonConstants.STATUS_START;
           this.watchStatus();
