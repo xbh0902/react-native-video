@@ -261,9 +261,7 @@ export class VideoController {
    * @return
    */
   switchVideo(newUrl: string): void {
-    Logger.debug(TAG, `switchVideo,  state ${JSON.stringify(this.avPlayer.state)}`);
     this.bindState();
-    Logger.debug(TAG, `switchVideo, 100`);
     Logger.debug(TAG, `switchVideo,  state ${JSON.stringify(this.url)},new: ${JSON.stringify(newUrl)}`);
     this.url = newUrl;
     Logger.debug(TAG, `switchVideo, 200`);
@@ -276,11 +274,9 @@ export class VideoController {
       Logger.debug(TAG, `switchVideo, 201 ,${this.url}`);
       this.avPlayer.url = this.url;
     } else {
-      Logger.debug(TAG, `switchVideo, 202 ,reset`);
       this.avPlayer.reset();
       Logger.debug(TAG, `switchVideo, 202 ,${this.url}`);
     }
-    Logger.debug(TAG, `switchVideo, 300`);
     Logger.debug(TAG, `switchVideo,  state11 ${JSON.stringify(this.avPlayer.state)}`);
   }
 
@@ -366,16 +362,13 @@ export class VideoController {
       this.status === CommonConstants.STATUS_COMPLETED
     ) {
       this.avPlayer.seek(this.seekTime, media.SeekMode.SEEK_CLOSEST);
-      Logger.debug(TAG, `avPlayer.seek`);
     }
   }
 
   /* 初始化播放器状态 */
   initProps(): void {
-
     Logger.debug(TAG, `initProps repeat, ${JSON.stringify(this.playerThis.repeat)}`);
     this.avPlayer.loop = this.playerThis.repeat;
-
     this.mMuted = this.playerThis.muted;
     this.preMutedVolume = this.playerThis.volume;
     /* 更新音量 静音 -20231227 */
