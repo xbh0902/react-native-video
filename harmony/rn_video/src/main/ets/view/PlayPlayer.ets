@@ -153,12 +153,7 @@ export struct PlayPlayer {
             surfaceHeight: PlayConstants.PLAY_PLAYER.SURFACE_HEIGHT
           });
           this.surfaceID = Number(this.xComponentController.getXComponentSurfaceId());
-          Logger.debug(TAG, `tofirstPlay, ${JSON.stringify(this.src)}`);
-          if (this.src == '') {
-            this.playVideoModel.firstPlay(this.index, this.src, this.surfaceID);
-          } else {
-            this.playVideoModel.firstPlay(this.index, this.src, this.surfaceID);
-          }
+          this.playVideoModel.firstPlay(this.index, this.src, this.surfaceID);
         })
         .width(this.videoWidth)
         .height(this.videoHeight)

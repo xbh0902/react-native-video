@@ -42,7 +42,7 @@ export class VideoController {
   private status: number = 0; /* 这个是自定义的 ，avplayer状态可以获取字符串状态 */
   private loop: boolean = false;
   private index: number = 0;
-  private url: string = '';
+  private url: string | media.AVFileDescriptor = '';
   private surfaceId: number = 0;
   private playSpeed: number = PlayConstants.PLAY_PAGE.PLAY_SPEED;
   private seekTime: number = PlayConstants.PLAY_PROGRESS.SEEK_TIME;
@@ -72,7 +72,11 @@ export class VideoController {
         Logger.debug(TAG, `createAVPlayer after bind`);
         if (this.flagtd) {
           this.flagtd = false;
-          this.avPlayer.url = this.url;
+          if(typeof this.url === "string"){
+            this.avPlayer.url = this.url;
+          } else {
+            this.avPlayer.fdSrc = this.url;
+          }
           Logger.debug(TAG, `createAVPlayer need toplay url,after bind:` + this.url);
         } else {
           Logger.debug(TAG, `createAVPlayer noneed toplay url,after bind`);
@@ -152,7 +156,11 @@ export class VideoController {
     this.avPlayer.on(Events.STATE_CHANGE, async (state) => {
       switch (state) {
         case AvplayerStatus.IDLE:
-          this.avPlayer.url = this.url;
+          if(typeof this.url === "string"){
+            this.avPlayer.url = this.url;
+          }else{
+            this.avPlayer.fdSrc = this.url;
+          }
           this.onVideoLoadStart(this.url);
           break;
         case AvplayerStatus.INITIALIZED:
@@ -210,14 +218,17 @@ export class VideoController {
    * @param url Playback Path.
    * @param surfaceId Indicates the surface ID of the surfaceId.
    */
-  firstPlay(index: number, url: string, surfaceId: number): void {
+  firstPlay(index: number, url: string | media.AVFileDescriptor, surfaceId: number): void {
     this.index = index;
     this.url = url;
     this.surfaceId = surfaceId;
-    if (this.avPlayer && this.avPlayer.state == 'idle') {
-      this.avPlayer.url = this.url;
+    if (this.avPlayer && this.avPlayer.state == AvplayerStatus.IDLE) {
+      if(typeof this.url === "string"){
+        this.avPlayer.url = this.url;
+      } else {
+        this.avPlayer.fdSrc = this.url;
+      }
     } else {
-      Logger.debug(TAG, `avPlayer no`);
       this.flagtd = true;
     }
   }
@@ -260,22 +271,20 @@ export class VideoController {
    * @brief 切换视频播放
    * @return
    */
-  switchVideo(newUrl: string): void {
+  switchVideo(newUrl: string | media.AVFileDescriptor): void {
     this.bindState();
-    Logger.debug(TAG, `switchVideo,  state ${JSON.stringify(this.url)},new: ${JSON.stringify(newUrl)}`);
     this.url = newUrl;
-    Logger.debug(TAG, `switchVideo, 200`);
     if (this.surfaceId == 0 || this.surfaceId == undefined) {
-      Logger.debug(TAG, `switchVideo, 210`);
       return;
     }
-
-    if ('idle' == (this.avPlayer.state)) {
-      Logger.debug(TAG, `switchVideo, 201 ,${this.url}`);
-      this.avPlayer.url = this.url;
+    if (AvplayerStatus.IDLE == this.avPlayer.state) {
+      if(typeof this.url === "string"){
+        this.avPlayer.url = this.url;
+      } else {
+        this.avPlayer.fdSrc = this.url;
+      }
     } else {
       this.avPlayer.reset();
-      Logger.debug(TAG, `switchVideo, 202 ,${this.url}`);
     }
     Logger.debug(TAG, `switchVideo,  state11 ${JSON.stringify(this.avPlayer.state)}`);
   }
@@ -470,7 +479,7 @@ export class VideoController {
    * setSrc()->mEventEmitter.receiveEvent
    * @param cUri: 当前视频URL
    */
-  onVideoLoadStart(cUri: string): void {
+  onVideoLoadStart(cUri: string | media.AVFileDescriptor): void {
     Logger.debug(TAG, `onVideoLoadStart URL: ${cUri}`);
     this.playPageThis.onVideoLoadStart(cUri);
   }

@@ -28,7 +28,7 @@ import {
   ViewBaseProps,
   RNViewBase,
 } from '@rnoh/react-native-openharmony'
-
+import media from '@ohos.multimedia.media';
 import { PlayPlayer } from './view/PlayPlayer';
 import { VideoController } from './controller/VideoController';
 import { PlayConstants } from './common/constants/PlayConstants';
@@ -74,7 +74,7 @@ export interface IRNCVideo {
   videoMargin: string
   viewWidth: number
   viewHeight: number
-  onVideoLoadStart: (cUri: string) => void
+  onVideoLoadStart: (cUri: string | media.AVFileDescriptor) => void
   onReadyForDisplay: () => void
   onVideoProgress: (currentTime: number, _playableDuration:number, _seekableDuration:number) => void
   onVideoLoad: (startSecond:number,length:number,widthIn:number,heightIn:number,orientationIn:string) => void
@@ -100,7 +100,7 @@ export struct RNCVideo {
   private playVideoModel: VideoController = new VideoController();
 
   srcParam: string = '';/*外部传入参数src*/
-  @Provide('srcVar') src: string = '';/*最终avplayer认识的 字符串*/
+  @Provide('srcVar') src: string | media.AVFileDescriptor = '';/*最终avplayer认识的 字符串*/
   @Provide index: number = 0;
   @Provide type: number = CommonConstants.TYPE_LOCAL ;//TODO:luoxf 修改td
   @Provide('mutedVar') muted: boolean = false;
@@ -255,7 +255,7 @@ export struct RNCVideo {
  * @param cUri 当前视频URL
  * @return null
  */
-  onVideoLoadStart(cUri: string): void {
+  onVideoLoadStart(cUri: string | media.AVFileDescriptor): void {
     if (this.ctx){
       this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
         type: "onVideoLoadStart",
@@ -328,6 +328,10 @@ export struct RNCVideo {
       this.type = CommonConstants.TYPE_INTERNET
       this.src = this.srcParam
       Logger.debug(TAG, `startsWith, finalsrc: ${(this.src)}`);
+    } else if(this.srcParam.startsWith('asset')) {
+      const fileUrl = this.srcParam.split('//')[1];
+      let fileDescriptor = await getContext(this).resourceManager.getRawFd(`assets/${fileUrl}`);
+      this.src = fileDescriptor;
     } else {
       Logger.debug(TAG, `local, finalsrc: ${(this.src)}`);
     }
