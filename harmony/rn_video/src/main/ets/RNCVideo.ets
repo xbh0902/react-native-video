@@ -76,11 +76,11 @@ export interface RNCVideoProps extends ViewBaseProps {
   disableFocus: boolean
   preventsDisplaySleepDuringVideoPlayback: boolean
 }
-
+export interface AutoLayoutViewState {}
 export const RNC_VIDEO_TYPE: string = "RNCVideo"
 
-export type VideoViewDescriptor = Descriptor<'RNCVideo', RNCVideoProps>
-// export type VideoViewDescriptor = Descriptor<RNC_VIDEO_TYPE, RNCVideoProps>
+export type VideoViewDescriptor = Descriptor<"RNCVideo", ViewBaseProps, AutoLayoutViewState, RNCVideoProps>
+
 const RNC_VIDEO_SEEK:string = 'seek'
 
 export interface IRNCVideo {
@@ -105,7 +105,7 @@ const TAG: string = 'RNOH in RNCVideo'
 export struct RNCVideo {
   ctx!: RNOHContext;
   tag: number = -1;
-  @State descriptor: VideoViewDescriptor = {} as VideoViewDescriptor;
+  @State descriptor: VideoViewDescriptor = Object() as VideoViewDescriptor;
   private callbackList:Array<() => void> = []
   @State videoMargin: string = PlayConstants.PLAY_PAGE.MARGIN_ZERO;
 
@@ -139,16 +139,12 @@ export struct RNCVideo {
   isUserPaused = false
 
   aboutToAppear(): void {
-    Logger.debug(TAG, `aboutToAppear 修改后 !}`);
+
     this.descriptor = this.ctx.descriptorRegistry.getDescriptor<VideoViewDescriptor>(this.tag);
-    Logger.debug(TAG, `descriptor props, ${JSON.stringify(this.descriptor.props)}`);
-    Logger.debug(TAG, `descriptor layoutMetrics, ${JSON.stringify(this.descriptor.layoutMetrics)}`);
     this.callbackList.push(this.ctx.descriptorRegistry.subscribeToDescriptorChanges(this.tag,
       (newDescriptor) => {
         this.descriptor = (newDescriptor as VideoViewDescriptor);
         /*------ 当RN侧属性props有更改 -------*/
-        Logger.debug(TAG, `descriptor change, `);
-        Logger.debug(TAG, `newDescriptor props, ${JSON.stringify(this.descriptor.props)}`);
         this.updatePropFromDesc();
         this.preparePlayer();
         this.videoWidth = this.viewWidth;
@@ -222,16 +218,16 @@ export struct RNCVideo {
 
   /* 更新属性变更  */
   updatePropFromDesc(): void {
-    this.muted = this.descriptor.props.muted
-    this.paused = this.descriptor.props.paused
-    this.isUserPaused = this.descriptor.props.paused
+    this.muted = this.descriptor.rawProps.muted
+    this.paused = this.descriptor.rawProps.paused
+    this.isUserPaused = this.descriptor.rawProps.paused
 
-    this.resizeMode = this.descriptor.props.resizeMode
-    this.repeat = this.descriptor.props.repeat
-    this.volume = this.descriptor.props.volume
-    this.srcParam = this.descriptor.props.src.uri
-    this.disableFocus = this.descriptor.props.disableFocus
-    this.preventsDisplaySleepDuringVideoPlayback = this.descriptor.props.preventsDisplaySleepDuringVideoPlayback
+    this.resizeMode = this.descriptor.rawProps.resizeMode
+    this.repeat = this.descriptor.rawProps.repeat
+    this.volume = this.descriptor.rawProps.volume
+    this.srcParam = this.descriptor.rawProps.src.uri
+    this.disableFocus = this.descriptor.rawProps.disableFocus
+    this.preventsDisplaySleepDuringVideoPlayback = this.descriptor.rawProps.preventsDisplaySleepDuringVideoPlayback
     this.viewWidth = this.descriptor.layoutMetrics.frame.size.width
     this.viewHeight = this.descriptor.layoutMetrics.frame.size.height
     this.changedViewWidth = this.viewWidth
@@ -286,8 +282,8 @@ export struct RNCVideo {
     if (this.ctx){
       this.ctx.rnInstance.emitComponentEvent(this.descriptor.tag, RNC_VIDEO_TYPE, {
         type: "onVideoLoadStart",
-        isNetwork: this.descriptor.props.src.isNetwork,
-        videoType: this.descriptor.props.src.type,
+        isNetwork: this.descriptor.rawProps.src.isNetwork,
+        videoType: this.descriptor.rawProps.src.type,
         uri: cUri
       })
     }
